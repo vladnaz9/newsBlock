@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} Welcome!{% endblock %}</title>
+    {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+    {% block stylesheets %}
+        <style>
+            input,
+            label {
+                display: block;
+            }
+        </style>
+    {% endblock %}
+
+    {% block javascripts %}
+        {# {{ encore_entry_script_tags('app') }} #}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    {{ app.user.username }}
+{% endblock %}
+</body>
+</html>
