@@ -24,12 +24,11 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $form->get('password')->getData();
 
             $user->setPassword(
                 $userPasswordHasherInterface->hashPassword(
                     $user,
-                    $password
+                    $form->get('password')->getData()
                 )
             );
             $user->setCreatedAt(new \DateTimeImmutable('now'));

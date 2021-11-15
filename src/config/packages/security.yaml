@@ -41,3 +41,4 @@ security:
           - { path: ^/home, roles: ROLE_USER }
           - { path: ^/category, roles: ROLE_USER }
           - { path: ^/news, roles: ROLE_USER }
+          - { path: ^/user, roles: ROLE_USER }

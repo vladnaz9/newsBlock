@@ -3,6 +3,7 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+    {% block header %} {{ parent() }} {% endblock %}
     <form method="post">
         {% if error %}
 {#            {{ dump(error) }}#}
@@ -14,6 +15,8 @@
                 You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
             </div>
         {% else %}
+        <div class="container ">
+            <div class="mb-3 col-3 mt-3">
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
             <label for="inputUsername">Username</label>
             <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control"
@@ -26,9 +29,14 @@
                    value="{{ csrf_token('authenticate') }}"
             >
 
-            <button class="btn btn-lg btn-primary" type="submit">
+            <button class="btn btn-sm btn-primary mt-1 " type="submit">
                 Sign in
             </button>
+                <div id="signInHelp" class="form-text">don't have an account?
+                <a href="{{ path('app_register') }}">Create</a>
+                </div>
+            </div>
+        </div>
         {% endif %}
 
 

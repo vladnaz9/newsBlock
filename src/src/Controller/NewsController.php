@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\News;
 use App\Form\NewsType;
+use App\Repository\CategoryRepository;
 use App\Repository\NewsRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,10 +31,11 @@ class NewsController extends AbstractController
     /**
      * @Route("/new", name="news_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,CategoryRepository $categoryRepository): Response
     {
         $news = new News();
-        $form = $this->createForm(NewsType::class, $news);
+        $categories = $categoryRepository->findAll();
+        $form = $this->createForm(NewsType::class, $news );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -49,6 +51,7 @@ class NewsController extends AbstractController
         return $this->renderForm('news/new.html.twig', [
             'news' => $news,
             'form' => $form,
+            'categories' => $categories,
         ]);
     }
 

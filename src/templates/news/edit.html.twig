@@ -3,6 +3,7 @@
 {% block title %}Edit News{% endblock %}
 
 {% block body %}
+    {% block header %} {{ parent() }} {% endblock %}
     <h1>Edit News</h1>
 
     {{ include('news/_form.html.twig', {'button_label': 'Update'}) }}

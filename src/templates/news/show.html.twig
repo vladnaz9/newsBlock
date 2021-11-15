@@ -3,32 +3,49 @@
 {% block title %}News{% endblock %}
 
 {% block body %}
-    <h1>News</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ news.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ news.title }}</td>
-            </tr>
-            <tr>
-                <th>Body</th>
-                <td>{{ news.body }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ news.createdAt ? news.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
+    {% block header %} {{ parent() }} {% endblock %}
+    <h3 class="ps-3">{{ news.title }} - {{ news.createdAt ? news.createdAt|date('Y-m-d H:i:s') : '' }}</h3>
+    <div class="col-6 p-4">
+        {{ news.body }}
+    </div>
+    <small class="ps-2">
+            news authored by <b>{{ news.author }}</b>
+    </small>
+    {# <table class="table"> #}
+    {# <tbody> #}
+    {# <tr> #}
+    {# <th>Id</th> #}
+    {# <td>{{ news.id }}</td> #}
+    {# </tr> #}
+    {# {% if  news.author %} #}
+    {# <tr> #}
+    {# <th>Author</th> #}
+    {# <td>{{ news.author }}</td> #}
+    {# </tr> #}
+    {# {% endif %} #}
+    {# {% if  news.category %} #}
+    {# <tr> #}
+    {# <th>Category</th> #}
+    {# <td>{{ news.category }}</td> #}
+    {# </tr> #}
+    {# {% endif %} #}
+    {# <tr> #}
+    {# <th>Title</th> #}
+    {# <td>{{ news.title }}</td> #}
+    {# </tr> #}
+    {# <tr> #}
+    {# <th>Body</th> #}
+    {# <td>{{ news.body }}</td> #}
+    {# </tr> #}
+    {# <tr> #}
+    {# <th>CreatedAt</th> #}
+    {# <td>{{ news.createdAt ? news.createdAt|date('Y-m-d H:i:s') : '' }}</td> #}
+    {# </tr> #}
+    {# </tbody> #}
+    {# </table> #}
+    <div class="ps-3">
     <a href="{{ path('news_index') }}">back to list</a>
-
     <a href="{{ path('news_edit', {'id': news.id}) }}">edit</a>
-
+    </div>
     {{ include('news/_delete_form.html.twig') }}
 {% endblock %}

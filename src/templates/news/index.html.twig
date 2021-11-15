@@ -3,14 +3,16 @@
 {% block title %}News index{% endblock %}
 
 {% block body %}
-    <h1>News index</h1>
+    {% block header %} {{ parent() }} {% endblock %}
+    <h3>News index</h3>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Category</th>
                 <th>Title</th>
-                <th>Body</th>
+{#                <th>Body</th>#}
                 <th>CreatedAt</th>
                 <th>actions</th>
             </tr>
@@ -19,11 +21,11 @@
         {% for news in news %}
             <tr>
                 <td>{{ news.id }}</td>
-                <td>{{ news.title }}</td>
-                <td>{{ news.body }}</td>
+                <td>{{ news.category }}</td>
+                <td><a href="{{ path('news_show', {'id': news.id}) }}">{{ news.title }}</a></td>
+{#                <td>{{ news.body }}</td>#}
                 <td>{{ news.createdAt ? news.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('news_show', {'id': news.id}) }}">show</a>
                     <a href="{{ path('news_edit', {'id': news.id}) }}">edit</a>
                 </td>
             </tr>
