@@ -2,7 +2,8 @@ version: "3.8"
 
 volumes:
   postgres-data:
-
+  redis-data:
+  
 services:
   db:
     container_name: db
@@ -41,3 +42,11 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      
+  redis:
+    image: redis
+    volumes:
+      - redis-data:/data
+      - &volume-data-shared ./work/data/shared:/opt/data
+    ports:
+      - 6379:6379

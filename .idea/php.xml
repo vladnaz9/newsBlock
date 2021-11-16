@@ -105,6 +105,8 @@
       <path value="$PROJECT_DIR$/src/vendor/doctrine/doctrine-migrations-bundle" />
       <path value="$PROJECT_DIR$/src/vendor/doctrine/orm" />
       <path value="$PROJECT_DIR$/src/vendor/doctrine/inflector" />
+      <path value="$PROJECT_DIR$/src/vendor/doctrine/doctrine-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/src/vendor/doctrine/data-fixtures" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.4">

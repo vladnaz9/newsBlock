@@ -14,22 +14,22 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/news")
+ * @Route("admin/news")
  */
 class NewsController extends AbstractController
 {
     /**
-     * @Route("/", name="news_index", methods={"GET"})
+     * @Route("/", name="admin_news_index", methods={"GET"})
      */
     public function index(NewsRepository $newsRepository): Response
     {
-        return $this->render('news/index.html.twig', [
+        return $this->render('admin/news/index.html.twig', [
             'news' => $newsRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="news_new", methods={"GET","POST"})
+     * @Route("/new", name="admin_news_new", methods={"GET","POST"})
      */
     public function new(Request $request,CategoryRepository $categoryRepository): Response
     {
@@ -45,10 +45,10 @@ class NewsController extends AbstractController
             $entityManager->persist($news);
             $entityManager->flush();
 
-            return $this->redirectToRoute('news_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_news_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('news/new.html.twig', [
+        return $this->renderForm('admin/news/new.html.twig', [
             'news' => $news,
             'form' => $form,
             'categories' => $categories,
@@ -56,17 +56,17 @@ class NewsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="news_show", methods={"GET"})
+     * @Route("/{id}", name="admin_news_show", methods={"GET"})
      */
     public function show(News $news): Response
     {
-        return $this->render('news/show.html.twig', [
+        return $this->render('admin/news/show.html.twig', [
             'news' => $news,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="news_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_news_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, News $news): Response
     {
@@ -76,17 +76,17 @@ class NewsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('news_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_news_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('news/edit.html.twig', [
+        return $this->renderForm('admin/news/edit.html.twig', [
             'news' => $news,
             'form' => $form,
         ]);
     }
 
     /**
-     * @Route("/{id}", name="news_delete", methods={"POST"})
+     * @Route("/{id}", name="admin_news_delete", methods={"POST"})
      */
     public function delete(Request $request, News $news): Response
     {
@@ -96,6 +96,6 @@ class NewsController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('news_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_news_index', [], Response::HTTP_SEE_OTHER);
     }
 }

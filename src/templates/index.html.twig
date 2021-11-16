@@ -1,12 +1,32 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}News index{% endblock %}
+
 {% block body %}
     {% block header %} {{ parent() }} {% endblock %}
-    <div class="p-3">
-        <h1 class="h4 p-3">Добро пожаловать на нашу страницу </h1>
-        Текст главной страницы
+    <h3>News index</h3>
 
-    </div>
-
+    <table class="table">
+        <thead>
+        <tr>
+        </tr>
+        </thead>
+        <tbody>
+        {% for news in news %}
+            <tr>
+                <td class="col-1">{{ news.category }}</td>
+                <td class="col-9">
+                    <a href="{{ path('news_show', {'id': news.id}) }}">{{ news.title}}</a><br>
+                {{ news.body|striptags|length > 100 ? news.body|striptags|slice(0, 100) ~ '...' : news.body|striptags }}
+                </td>
+                <td class="form-text col-2">{{ news.createdAt ? news.createdAt|date('d-M-y H:i') : '' }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}

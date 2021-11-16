@@ -35,21 +35,23 @@ class ProfileController extends AbstractController
      */
     public function editProfile(Request $request, User $user): Response
     {
+
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
+        if ($user->getUsername() === $this->getUser()->getUsername()) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+                return $this->render('profile/showProfile.html.twig', [
+                    'user' => $this->getUser(),
+                ]);
+            }
 
-            return $this->render('profile/showProfile.html.twig', [
-                'user' => $this->getUser(),
+            return $this->renderForm('profile/editProfile.html.twig', [
+                'user' => $user,
+                'form' => $form,
             ]);
-        }
-
-        return $this->renderForm('profile/editProfile.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+        } else  return $this->redirect('/news');
     }
 
     /**
@@ -59,24 +61,40 @@ class ProfileController extends AbstractController
     {
         $form = $this->createForm(PasswordType::class);
         $form->handleRequest($request);
+        if ($user->getUsername() == $this->getUser()->getUsername()) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $user->setPassword(
+                    $userPasswordHasherInterface->hashPassword(
+                        $user,
+                        $form->get('password')->getData()
+                    )
+                );
+                $this->getDoctrine()->getManager()->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword(
-                $userPasswordHasherInterface->hashPassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
-            $this->getDoctrine()->getManager()->flush();
+                return $this->render('profile/showProfile.html.twig', [
+                    'user' => $this->getUser(),
+                ]);
+            }
 
-            return $this->render('profile/showProfile.html.twig', [
-                'user' => $this->getUser(),
+            return $this->renderForm('profile/editPassword.html.twig', [
+                'form' => $form
             ]);
+        } else  return $this->redirect('/news');
+    }
+
+    /**
+     * @Route("/{id}", name="user_delete", methods={"POST"})
+     */
+    public function delete(Request $request, User $user): Response
+    {
+
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($user);
+            $entityManager->flush();
         }
 
-        return $this->renderForm('profile/editPassword.html.twig', [
-            'form' => $form
-        ]);
+        return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
     }
 
 }
