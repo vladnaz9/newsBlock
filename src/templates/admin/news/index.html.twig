@@ -9,21 +9,25 @@
     <table class="table">
         <thead>
             <tr>
-
-                <th>Категория</th>
+                <th>Id</th>
+                <th>Category</th>
                 <th>Title</th>
 {#                <th>Body</th>#}
-                <th> </th>
-
+                <th>CreatedAt</th>
+                <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for news in news %}
             <tr>
+                <td>{{ news.id }}</td>
                 <td>{{ news.category }}</td>
                 <td><a href="{{ path('news_show', {'id': news.id}) }}">{{ news.title }}</a></td>
 {#                <td>{{ news.body }}</td>#}
-                <td class="form-text">{{ news.createdAt ? news.createdAt|date('d-M-y H:i') : '' }}</td>
+                <td>{{ news.createdAt ? news.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('admin_news_edit', {'id': news.id}) }}">edit</a>
+                </td>
             </tr>
         {% else %}
             <tr>
@@ -33,4 +37,5 @@
         </tbody>
     </table>
 
+    <a href="{{ path('admin_news_new') }}">Create new</a>
 {% endblock %}

@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Sodium\add;
 
 class NewsType extends AbstractType
 {
@@ -23,7 +24,9 @@ class NewsType extends AbstractType
                 'class' => Category::class,
                 'choice_value' => 'name',
             ])
+            ->add('tags')
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

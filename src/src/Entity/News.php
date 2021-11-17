@@ -44,6 +44,11 @@ class News
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="json",nullable=true)
+     */
+    private $tags = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,4 +113,19 @@ class News
 
         return $this;
     }
+
+    public function getTags(): ?array
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param array $tags
+     */
+    public function setTags(array $tags): void
+    {
+        $this->tags = $tags;
+    }
+
+
 }

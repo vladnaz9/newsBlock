@@ -18,4 +18,6 @@ WORKDIR /var/www
 
 CMD composer i -o ; wait-for-it db:5432 -- bin/console doctrine:migrations:migrate ;  php-fpm 
 
+USER www-data:www-data
+
 EXPOSE 9000

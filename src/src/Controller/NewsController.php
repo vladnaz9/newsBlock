@@ -31,11 +31,11 @@ class NewsController extends AbstractController
     /**
      * @Route("/new", name="admin_news_new", methods={"GET","POST"})
      */
-    public function new(Request $request,CategoryRepository $categoryRepository): Response
+    public function new(Request $request, CategoryRepository $categoryRepository): Response
     {
         $news = new News();
         $categories = $categoryRepository->findAll();
-        $form = $this->createForm(NewsType::class, $news );
+        $form = $this->createForm(NewsType::class, $news);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -90,7 +90,7 @@ class NewsController extends AbstractController
      */
     public function delete(Request $request, News $news): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$news->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $news->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($news);
             $entityManager->flush();

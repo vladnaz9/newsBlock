@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}News{% endblock %}
+
+{% block body %}
+    {% block header %} {{ parent() }} {% endblock %}
+    <div class="ps-3">
+        <h3 class="ps-1">{{ news.title }} </h3>
+        <div class="col-6 p-4">
+            {{ news.body }}
+        </div>
+        <div id="dateCreate" class="form-text">
+            {{ news.createdAt ? news.createdAt|date('d-M-Y H:i:s') : '' }}
+        </div>
+    </div>
+    {# <table class="table"> #}
+    {# <tbody> #}
+    {# <tr> #}
+    {# <th>Id</th> #}
+    {# <td>{{ news.id }}</td> #}
+    {# </tr> #}
+    {# {% if  news.author %} #}
+    {# <tr> #}
+    {# <th>Author</th> #}
+    {# <td>{{ news.author }}</td> #}
+    {# </tr> #}
+    {# {% endif %} #}
+    {# {% if  news.category %} #}
+    {# <tr> #}
+    {# <th>Category</th> #}
+    {# <td>{{ news.category }}</td> #}
+    {# </tr> #}
+    {# {% endif %} #}
+    {# <tr> #}
+    {# <th>Title</th> #}
+    {# <td>{{ news.title }}</td> #}
+    {# </tr> #}
+    {# <tr> #}
+    {# <th>Body</th> #}
+    {# <td>{{ news.body }}</td> #}
+    {# </tr> #}
+    {# <tr> #}
+    {# <th>CreatedAt</th> #}
+    {# <td>{{ news.createdAt ? news.createdAt|date('Y-m-d H:i:s') : '' }}</td> #}
+    {# </tr> #}
+    {# </tbody> #}
+    {# </table> #}
+
+    <div class="ps-3">
+        <a href="{{ path('admin_news_index') }}">back to list</a>
+        <a href="{{ path('admin_news_edit', {'id': news.id}) }}">edit</a>
+    </div>
+    {{ include('admin/news/_delete_form.html.twig') }}
+{% endblock %}

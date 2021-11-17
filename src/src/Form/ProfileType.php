@@ -12,9 +12,7 @@ class ProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username')
-
-        ;
+            ->add('username');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

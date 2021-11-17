@@ -20,7 +20,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     *@Route("/", name="/")
+     * @Route("/", name="/")
      */
     public function homepage(): Response
     {
