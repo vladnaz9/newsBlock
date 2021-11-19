@@ -1,11 +1,5 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}News index{% endblock %}
-
 {% block body %}
-    {% block header %} {{ parent() }} {% endblock %}
-<div class="container">
-    <h3>Наши новости</h3>
     <table class="table">
         <thead>
         <tr>
@@ -14,10 +8,10 @@
         <tbody>
         {% for news in news %}
             <tr>
-{#                <td class="col-1">{{ news.category }}</td>#}
+
                 <td class="col-9">
-                    <a href="{{ path('news_show', {'id': news.id}) }}">{{ news.title}}</a><br>
-                {{ news.body|striptags|length > 100 ? news.body|striptags|slice(0, 220) ~ '...' : news.body|striptags }}
+                    <a href="{{ path('news_show', {'id': news.id}) }}">{{ news.title }}</a><br>
+                    {{ news.body|striptags|length > 100 ? news.body|striptags|slice(0, 120) ~ '...' : news.body|striptags }}
                 </td>
                 <td class="form-text col-2">{{ news.createdAt ? news.createdAt|date('d-M-y H:i') : '' }}</td>
             </tr>
@@ -28,5 +22,4 @@
         {% endfor %}
         </tbody>
     </table>
-</div>
 {% endblock %}

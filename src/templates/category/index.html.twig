@@ -4,24 +4,24 @@
 
 {% block body %}
     {% block header %} {{ parent() }} {% endblock %}
-<div class="p-3">
-    <table class="table">
-        <thead>
+    <div class="container mt-1">
+        <table class="table">
+            <thead>
             <tr>
-                <th>Name</th>
+                <th>Категории:</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for category in categories %}
-            <tr>
-                <td><a href="{{ path('category_show', {'id': category.id}) }}">{{ category.name }}</a></td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no categories found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td><a href="{{ path('category_show', {'id': category.id}) }}">{{ category.name }}</a></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no categories found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

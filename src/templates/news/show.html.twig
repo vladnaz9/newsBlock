@@ -9,6 +9,12 @@
         <div class="col-6 p-4">
             {{ news.body }}
         </div>
+        <div class="">
+            {% for tag in news.tags %}
+                <a href="{{ path('news_show_by_tag', {'tag': tag}) }}">#{{ tag }}</a>
+
+            {% endfor %}
+        </div>
         <div id="dateCreate" class="form-text">
             {{ news.createdAt ? news.createdAt|date('d-M-Y H:i:s') : '' }}
         </div>

@@ -32,4 +32,16 @@ class UserNewsController extends AbstractController
             'news' => $news,
         ]);
     }
+
+    /**
+     * @Route("/tags/{tag}", name="news_show_by_tag", methods={"GET"})
+     */
+    public function showByTags(NewsRepository $newsRepository, string $tag): Response
+    {
+        $news = $newsRepository->findByTags($tag);
+        return $this->render('news/by_tag.html.twig', [
+            'news' => $news,
+            'tag' => $tag
+        ]);
+    }
 }

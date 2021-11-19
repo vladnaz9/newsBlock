@@ -8,10 +8,11 @@ use App\Repository\CategoryRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function Sodium\add;
+
 
 class NewsType extends AbstractType
 {
@@ -24,8 +25,23 @@ class NewsType extends AbstractType
                 'class' => Category::class,
                 'choice_value' => 'name',
             ])
-            ->add('tags')
-        ;
+            ->add('tags');
+        $builder
+            ->get('tags')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($tagsAsArray) {
+                    if ($tagsAsArray == null) {
+                        return '';
+                    }
+                    // transform the array to a string
+                    return implode(", ", $tagsAsArray);
+                },
+                function ($tagsAsString) {
+                    // transform the string back to an array
+                    return explode(", ", $tagsAsString);
+                }
+            ));
+
 
     }
 

@@ -19,6 +19,37 @@ class NewsRepository extends ServiceEntityRepository
         parent::__construct($registry, News::class);
     }
 
+    /**
+     * @return News[] Returns an array of News objects
+     */
+    public function findByCategoryId(int $categoryId): array
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.category = :categoryId')
+            ->setParameter('categoryId', $categoryId)
+            ->orderBy('n.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
+//    /**
+//     * @return News[] Returns an array of News objects
+//     */
+//    public function findByTags(string $tag): array
+//    {
+//        $qb = $this->createQueryBuilder('n');
+//
+//        return $qb
+////            ->Where($qb->expr()->in($qb->expr()->literal($tag),'n.tags'))
+//            ->where("tags::JSONB ? $tag")
+//            ->orderBy('n.id', 'ASC')
+//            ->setMaxResults(10)
+//            ->getQuery()
+//            ->getResult();
+//    }
+
+
     // /**
     //  * @return News[] Returns an array of News objects
     //  */
