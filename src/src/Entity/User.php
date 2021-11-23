@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -39,9 +41,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $createdAt;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\ManyToMany(targetEntity=Role::class, mappedBy="userWithRole")
      */
-    private $roles = [];
+    private $roles;
+
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -87,21 +95,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
     public function getSalt()
     {
         return null;
@@ -120,5 +113,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->getUsername();
+    }
+
+//    /**
+//     * @return Collection|Role[]
+//     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $rolesName = [];
+        foreach ($roles as $role) {
+            $rolesName[] = $role->getName();
+        }
+        return $rolesName;
+//        return $roles;
+    }
+
+    public function addRoles(Role $roles): self
+    {
+        if (!$this->roles->contains($roles)) {
+            $this->roles[] = $roles;
+            $roles->addUserWithRole($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoles(Role $roles): self
+    {
+        if ($this->roles->removeElement($roles)) {
+            $roles->addUserWithRole($this);
+        }
+        return $this;
     }
 }
