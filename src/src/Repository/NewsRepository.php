@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -33,21 +34,37 @@ class NewsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-//    /**
-//     * @return News[] Returns an array of News objects
-//     */
-//    public function findByTags(string $tag): array
-//    {
-//        $qb = $this->createQueryBuilder('n');
-//
+    /**
+     * @return News[] Returns an array of News objects
+     */
+    public function findByTags(string $tag): array
+    {
+        $qb = $this->createQueryBuilder('n');
+
+
+        $sql = <<<SQL
+SELECT n.id,
+    tt
+FROM news n
+    LEFT JOIN LATERAL json_array_elements_text(n.tags) AS tt ON TRUE
+WHERE tt :: TEXT = '{$tag}' :: TEXT
+SQL;
+        $newsIds = $this->getEntityManager()->getConnection()->fetchFirstColumn($sql);
+
+        return $qb
+            ->where($qb->expr()->in('n.id', $newsIds))
+            ->getQuery()
+            ->getResult();
+
 //        return $qb
 ////            ->Where($qb->expr()->in($qb->expr()->literal($tag),'n.tags'))
-//            ->where("tags::JSONB ? $tag")
+////            ->where("tags::JSONB ? $tag")
+//            ->where("$literalTag  = any(SELECT news.tags FROM App\Entity\News news)")
 //            ->orderBy('n.id', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult();
-//    }
+    }
 
 
     // /**
@@ -78,4 +95,17 @@ class NewsRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function search(string $strFromSearch)
+    {
+        $qb = $this->createQueryBuilder('n');
+//        $str = $qb->expr()->literal($strFromSearch);
+
+        return $qb
+            ->andWhere($qb->expr()->like($qb->expr()->lower('n.title'), $qb->expr()->lower("'%$strFromSearch%'")))
+            ->orWhere($qb->expr()->like('n.body', "'%$strFromSearch%'"))
+            ->orderBy('n.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

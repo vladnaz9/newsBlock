@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\News;
 use App\Repository\NewsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -42,6 +43,18 @@ class UserNewsController extends AbstractController
         return $this->render('news/by_tag.html.twig', [
             'news' => $news,
             'tag' => $tag
+        ]);
+    }
+    /**
+     * @Route("/search", name="news_search", methods={"POST"})
+     */
+    //news search
+    public function search(Request $request, NewsRepository $repository): Response
+    {
+        $searchStr = $request->get('search');
+        $news = $repository->search($searchStr);
+        return $this->renderForm('news/index.html.twig', [
+            'news' => $news
         ]);
     }
 }
