@@ -8,6 +8,7 @@ use App\Form\RegistrationFormType;
 
 
 use App\Repository\RoleRepository;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,8 +35,9 @@ class RegistrationController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
-            $user->setCreatedAt(new \DateTimeImmutable('now'));
-            $user->addRoles($roleRepository->findOneBy(['id' => 1]));
+            $user->setCreatedAt(new DateTimeImmutable('now'));
+            $user->addRoles($roleRepository->findOneBy(['name' => 'ROLE_USER']));
+//            $user->addRoles($roleRepository->findOneBy(['name' => 'ROLE_ADMIN']));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
