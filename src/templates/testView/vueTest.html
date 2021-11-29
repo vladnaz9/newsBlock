@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+
+<form id="app">
+    <div id="app-6" v-if="hidden">
+        <label> name
+            <input v-model="name">
+        </label>
+        <label> surename
+            <input v-model="surename">
+        </label>
+        <p>
+            <input type="button" value="Отправить" name="button" v-on:click="disableForm">
+        </p>
+    </div>
+    <p v-if="!hidden">{{ result }}</p>
+</form>
+
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            hidden: true,
+            name: '',
+            surename: '',
+        },
+        methods: {
+            disableForm: function () {
+                this.hidden = false;
+                this.result = 'Hello, ' + this.name + ' ' + this.surename;
+            }
+        }
+    })
+
+
+</script>
+</body>
+</html>
